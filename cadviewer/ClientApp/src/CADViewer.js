@@ -355,7 +355,7 @@ class CADViewer extends Component {
         // DotNetCore + NodeJS
 
         var ServerBackEndUrl = "https://localhost:44325/";
-        var ServerLocation = "c:/cadviewer-testapp-dotnet-core-react-01/";
+        var ServerLocation = "c:/cadviewer-testapp-dotnet-core-react-01/cadviewer/cadviewer/wwwroot/";
 
 
         var ServerUrl = "https://localhost:44325/";
@@ -383,8 +383,7 @@ class CADViewer extends Component {
 
 
       // USER Controlled - 
-        cadviewer.cvjs_setHandlers_FrontEnd('dotNetCore', 'ReactJS', 'floorPlan');   // user controlled back-end
-
+        cadviewer.cvjs_setHandlers_FrontEnd('dotNetCore', 'ReactJS', 'floorPlan', "/CADViewer/");   // user controlled back-end
 
 
 //      cadviewer.cvjs_setHandlers_FrontEnd('NodeJS', 'ReactJS','floorPlan');   // user controlled back-end

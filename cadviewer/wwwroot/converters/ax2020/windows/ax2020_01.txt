@@ -1,0 +1,10 @@
+                 AutoXchange 2020 V20.05.49b
+Copyright (c) 2017, 2018, 2019, 2020, 2021 Tailor Made Software, Ltd.
+                      All Rights Reserved
+
+  Portions Copyright (c) 1997-2016, Tailor Made Software, Ltd.
+============================================================
+Input file: c:\cadviewer-testapp-dotnet-core-react-01\cadviewer\cadviewer\wwwroot\\content\drawings\dwg\hq17_.dwg
+Output File Name: c:\cadviewer-testapp-dotnet-core-react-01\cadviewer\cadviewer\wwwroot\converters\files\F173757.svg
+
+Elapsed Time: 0.659 seconds
