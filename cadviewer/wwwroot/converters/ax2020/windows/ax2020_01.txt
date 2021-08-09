@@ -1,13 +1,165 @@
-                 AutoXchange 2020 V20.05.53
+                 AutoXchange 2020 V20.05.53d
 Copyright (c) 2017, 2018, 2019, 2020, 2021 Tailor Made Software, Ltd.
                       All Rights Reserved
 
   Portions Copyright (c) 1997-2016, Tailor Made Software, Ltd.
 ============================================================
-There are 27 days until your key expires
+There are 20 days until your key expires
 Input file: c:\cadviewer-testapp-dotnet-core-react-01\cadviewer\cadviewer\wwwroot\\content\drawings\dwg\hq17_.dwg
-Output File Name: c:\cadviewer-testapp-dotnet-core-react-01\cadviewer\cadviewer\wwwroot\converters\files\F644806.svg
+Output File Name: c:\cadviewer-testapp-dotnet-core-react-01\cadviewer\cadviewer\wwwroot\converters\files\F815099.svg
 ViewName: ModelSpace
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
+Typeface: simplex
     Polyline: 1E07ED709
     Polyline: 1E07ED713
     Polyline: 1E07ED720
@@ -58,4 +210,4 @@ ViewName: ModelSpace
     Polyline: FA942BAB8397
     Polyline: FA942BAB8399
 
-Elapsed Time: 0.645 seconds
+Elapsed Time: 0.593 seconds
