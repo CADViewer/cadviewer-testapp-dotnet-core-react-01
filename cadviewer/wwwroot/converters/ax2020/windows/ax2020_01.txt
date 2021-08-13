@@ -1,12 +1,12 @@
-                 AutoXchange 2020 V20.05.53d
+                 AutoXchange 2022 V22.07.54
 Copyright (c) 2017, 2018, 2019, 2020, 2021 Tailor Made Software, Ltd.
                       All Rights Reserved
 
   Portions Copyright (c) 1997-2016, Tailor Made Software, Ltd.
 ============================================================
-There are 20 days until your key expires
+There are 16 days until your key expires
 Input file: c:\cadviewer-testapp-dotnet-core-react-01\cadviewer\cadviewer\wwwroot\\content\drawings\dwg\hq17_.dwg
-Output File Name: c:\cadviewer-testapp-dotnet-core-react-01\cadviewer\cadviewer\wwwroot\converters\files\F815099.svg
+Output File Name: c:\cadviewer-testapp-dotnet-core-react-01\cadviewer\cadviewer\wwwroot\converters\files\F776886.svg
 ViewName: ModelSpace
 Typeface: simplex
 Typeface: simplex
@@ -210,4 +210,4 @@ Typeface: simplex
     Polyline: FA942BAB8397
     Polyline: FA942BAB8399
 
-Elapsed Time: 0.593 seconds
+Elapsed Time: 0.516 seconds
