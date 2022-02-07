@@ -330,46 +330,14 @@ class CADViewer extends Component {
 
 		window.addEventListener('resize', this._handleWindowResize);
 	
-
-		// connecting to Servlets Server
-		//var ServerBackEndUrl = "http://localhost:8080/cadviewer/";
-		//var ServerLocation = "c:/xampp/tomcat/webapps/cadviewer/";
-
-
-
-		// Connecting to .NET Server
-		//var ServerBackEndUrl = "http://localhost:53737/";
-		//var ServerLocation = "c:/visualstudio/cadviewer/";
-
-
-		// Standard NodeJS Server
-		var ServerBackEndUrl = "http://localhost:3000/";
-		var ServerLocation = "c:/nodejs/cadviewer-conversion-server/";
-
-
-		// ONLINE TEST SERVER
-		//var ServerBackEndUrl = "http://convertcad.online:3000/";
-		//var ServerLocation = "/home/cadviewer/convertcad.online/cadviewer-conversion-server/";
-
-
-        // DotNetCore + NodeJS
-
-//        var ServerBackEndUrl = "https://localhost:5001/";
+        // DotNetCore Backend
         var ServerBackEndUrl = "https://localhost:44325/";
-        var ServerLocation = "c:/cadviewer-testapp-dotnet-core-react-01/cadviewer/cadviewer/wwwroot/";
-
-
-//        var ServerUrl = "https://localhost:5001/";
+        // React front-end
         var ServerUrl = "https://localhost:44325/";
 
+        var ServerLocation = "";
+//        var ServerLocation = "c:/cadviewer-testapp-dotnet-core-react-01/cadviewer/cadviewer/wwwroot/";   - do not expose, "" will use server side paths
 
-
-		
-		//var FileName = ServerBackEndUrl+ "/content/drawings/dwg/LUXR-42-01-PID-005_0-Model.pdf";
-		//var FileName = ServerBackEndUrl + "/content/drawings/dwg/BRA_Alta Vila_02_CkIn_06082020.dwg";	
-		//var FileName = ServerBackEndUrl+ "/content/drawings/dwg/LUXR-42-01-PID-005_0-Model.pdf";
-		//var FileName = ServerBackEndUrl+ "/content/drawings/dwg/hq17_2spaces.dwg";
-		// var FileName = ServerBackEndUrl+ "/content/drawings/dwg/gnb_Sample.dwg";//
 
 		var FileName = ServerBackEndUrl+ "/content/drawings/dwg/hq17_.dwg";
 
@@ -385,7 +353,7 @@ class CADViewer extends Component {
 
 
       // USER Controlled - 
-        cadviewer.cvjs_setHandlers_FrontEnd('dotNetCore', 'ReactJS', 'floorPlan', "/CADViewer/");   // user controlled back-end
+        cadviewer.cvjs_setHandlers_FrontEnd('dotNetCore', 'ReactJS', 'floorPlan', "CADViewer/");   // user controlled back-end
 
 
 //      cadviewer.cvjs_setHandlers_FrontEnd('NodeJS', 'ReactJS','floorPlan');   // user controlled back-end

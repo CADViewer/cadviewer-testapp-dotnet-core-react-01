@@ -16,10 +16,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json.Linq;
 using EASendMail;
+using MailKit.Net.Smtp;
+using MimeKit;
+
+
+
 
 namespace cadviewer.Controllers
 {
-    [Route("/[controller]")]
     public class CADViewerController : Controller
     {
 
@@ -34,7 +38,7 @@ namespace cadviewer.Controllers
 
         // get Drawing
 
-        [HttpGet("[action]")]
+        [HttpGet]
         public string getFile(string remainOnServer, string fileTag, string Type)
         {
 
@@ -84,6 +88,21 @@ namespace cadviewer.Controllers
                 System.IO.File.Delete(localPath);
             }
 
+            
+            if (fileType == "svg")
+            {
+                //HttpContext.Response.Headers.Add("Content-Type", "image/svg+xml");
+            }
+            else
+                if (fileType == "svgz")
+            {
+                HttpContext.Response.Headers.Add("Content-Encoding", "gzip");
+                HttpContext.Response.Headers.Add("Content-Type", "image/svg+xml");
+            }
+            else
+                HttpContext.Response.Headers.Add("Content-Type", "text/plain");
+
+            
             return (temp.GetString(bytes));
 
         }
@@ -91,7 +110,7 @@ namespace cadviewer.Controllers
 
         // callApiConversion   - main control for conversions to SVG and PDF
 
-        [HttpPost("[action]")]
+        [HttpPost]
         public JsonResult callApiConversion(string request)
         {
 
@@ -121,7 +140,9 @@ namespace cadviewer.Controllers
                 string[] myoutput = new String[1];
                 string absFilePath = "";
 
-       
+                bool cvjs_svgz_compress = _config.GetValue<bool>("CADViewer:cvjs_svgz_compress");
+         
+                
 
                 Trace.WriteLine("callApiConversion cvjs_debug:"+cvjs_debug+"  YYY");
 
@@ -406,6 +427,16 @@ namespace cadviewer.Controllers
                     if (param_name[i].IndexOf("f") == 0 && param_name[i].Length == 1)
                     {
                         outputFormat = param_value[i];
+
+       
+                        // 20.05.52a
+                        if ((cvjs_svgz_compress == true) && (outputFormat == "svg"))
+                        {
+                            outputFormat = "svgz";
+                            param_value[i] = "svgz";
+                        }
+
+
                     }
                 }
 
@@ -603,10 +634,10 @@ namespace cadviewer.Controllers
 
                 // compose callback message
 
-                if (outputFormat.ToLower().IndexOf("svg") > -1)
-                {
+                if (outputFormat.ToLower().IndexOf("svg") > -1)  // BOTH svg + svgz   -> return outputFormat !!! note!
+                    {
 
-                    string CVJSresponse = "{\"completedAction\":\"svg_creation\",\"errorCode\":\"E" + exitCode + "\",\"converter\":\"AutoXchange AX2017\",\"version\":\"V1.00\",\"userLabel\":\"fromCADViewerJS\",\"contentLocation\":\"" + contentLocation + "\",\"contentResponse\":\"stream\",\"contentStreamData\":\"" + callbackMethod + "?remainOnServer=0&fileTag=" + tempFileName + "&Type=svg\"}";
+                    string CVJSresponse = "{\"completedAction\":\"svg_creation\",\"errorCode\":\"E" + exitCode + "\",\"converter\":\"AutoXchange AX2017\",\"version\":\"V1.00\",\"userLabel\":\"fromCADViewerJS\",\"contentLocation\":\"" + contentLocation + "\",\"contentResponse\":\"stream\",\"contentStreamData\":\"" + callbackMethod + "?remainOnServer=0&fileTag=" + tempFileName + "&Type=" + outputFormat + "\"}";
 
 
                     myoutput[0] = "SVG response: " + CVJSresponse;
@@ -665,8 +696,8 @@ namespace cadviewer.Controllers
 
 
         // LOADFILE   - loading of content to populate CADViewer interface and other stuff such as redlines
-        [HttpPost("[action]")]
-        public JsonResult LoadFile(string file)
+        [HttpPost]
+        public JsonResult LoadFile(string file, string listtype)
         {
 
             try
@@ -682,8 +713,26 @@ namespace cadviewer.Controllers
 
                 /*
                 string ServerLocation = AppSettings.Instance.Get<string>("CADViewer:ServerLocation"); 
-                string ServerUrl = AppSettings.Instance.Get<string>("CADViewer:ServerUrl");  
+                string ServerUrl = AppSettings.Instance.Get<string>("CADViewer:ServerUrl"); 
                 */
+
+                if (listtype != null)
+                {
+                    string loadtype = listtype.Trim('/');
+                    if (loadtype.IndexOf("serverfolder") == 0)
+                    {
+
+                        if (filePath.IndexOf(ServerUrl) == 0)
+                        {
+                            //do nothing!! - handle below
+                        }
+                        else
+                            filePath = ServerLocation + filePath;
+                    }
+
+                }
+
+
                 if (filePath.IndexOf(ServerUrl) == 0)
                 {
 
@@ -739,8 +788,8 @@ namespace cadviewer.Controllers
 
 
 
-        [HttpPost("[action]")]
-        public JsonResult LoadRedline(string file)
+        [HttpPost]
+        public JsonResult LoadRedline(string file, string listtype)
         {
 
             try
@@ -759,6 +808,28 @@ namespace cadviewer.Controllers
                 string ServerLocation = AppSettings.Instance.Get<string>("CADViewer:ServerLocation"); 
                 string ServerUrl = AppSettings.Instance.Get<string>("CADViewer:ServerUrl");  
                 */
+
+                if (listtype != null)
+                {
+                    string loadtype = listtype.Trim('/');
+                    if (loadtype.IndexOf("serverfolder") == 0)
+                    {
+
+                        if (filePath.IndexOf(ServerUrl) == 0)
+                        {
+                            //do nothing!! - handle below
+                        }
+                        else
+                            filePath = ServerLocation + filePath;
+                    }
+
+                }
+
+
+
+
+
+
                 if (filePath.IndexOf(ServerUrl) == 0)
                 {
 
@@ -818,8 +889,8 @@ namespace cadviewer.Controllers
 
 
         // SAVEFILE   - loading of content to populate CADViewer interface and other stuff such as redlines
-        [HttpPost("[action]")]
-        public JsonResult SaveFile(string file, string file_content, string custom_content)
+        [HttpPost]
+        public JsonResult SaveFile(string file, string file_content, string custom_content, string listtype)
         {
 
             try
@@ -834,6 +905,25 @@ namespace cadviewer.Controllers
                 string customContent = custom_content;
                 string ServerLocation = _config.GetValue<string>("CADViewer:ServerLocation");
                 string ServerUrl = _config.GetValue<string>("CADViewer:ServerUrl");
+
+
+                if (listtype != null)
+                {
+                    string loadtype = listtype.Trim('/');
+                    if (loadtype.IndexOf("serverfolder") == 0)
+                    {
+
+                        if (filePath.IndexOf(ServerUrl) == 0)
+                        {
+                            //do nothing!! - handle below
+                        }
+                        else
+                            filePath = ServerLocation + filePath;
+                    }
+
+                }
+
+
 
                 if (filePath.IndexOf(ServerUrl) == 0)
                 {
@@ -881,8 +971,8 @@ namespace cadviewer.Controllers
 
 
 
-        [HttpPost("[action]")]
-        public JsonResult SaveRedline(string file, string file_content, string custom_content)
+        [HttpPost]
+        public JsonResult SaveRedline(string file, string file_content, string custom_content, string listtype)
         {
 
             try
@@ -895,6 +985,25 @@ namespace cadviewer.Controllers
                 string customContent = custom_content;
                 string ServerLocation = _config.GetValue<string>("CADViewer:ServerLocation");
                 string ServerUrl = _config.GetValue<string>("CADViewer:ServerUrl");
+
+
+                if (listtype != null)
+                {
+                    string loadtype = listtype.Trim('/');
+                    if (loadtype.IndexOf("serverfolder") == 0)
+                    {
+
+                        if (filePath.IndexOf(ServerUrl) == 0)
+                        {
+                            //do nothing!! - handle below
+                        }
+                        else
+                            filePath = ServerLocation + filePath;
+                    }
+
+                }
+
+
 
                 if (filePath.IndexOf(ServerUrl) == 0)
                 {
@@ -942,8 +1051,8 @@ namespace cadviewer.Controllers
 
 
 
-        [HttpPost("[action]")]
-        public JsonResult AppendFile(string file, string file_content, string custom_content)
+        [HttpPost]
+        public JsonResult AppendFile(string file, string file_content, string custom_content, string listtype)
         {
 
             try
@@ -956,6 +1065,25 @@ namespace cadviewer.Controllers
                 string customContent = custom_content;
                 string ServerLocation = _config.GetValue<string>("CADViewer:ServerLocation");
                 string ServerUrl = _config.GetValue<string>("CADViewer:ServerUrl");
+
+
+                if (listtype != null)
+                {
+                    string loadtype = listtype.Trim('/');
+                    if (loadtype.IndexOf("serverfolder") == 0)
+                    {
+
+                        if (filePath.IndexOf(ServerUrl) == 0)
+                        {
+                            //do nothing!! - handle below
+                        }
+                        else
+                            filePath = ServerLocation + filePath;
+                    }
+
+                }
+
+
 
                 if (filePath.IndexOf(ServerUrl) == 0)
                 {
@@ -1002,7 +1130,7 @@ namespace cadviewer.Controllers
         }
 
 
-        [HttpPost("[action]")]
+        [HttpPost]
         public JsonResult ReturnPDFParams()
         {
 
@@ -1016,13 +1144,43 @@ namespace cadviewer.Controllers
 
 
 
-        [HttpPost("[action]")]
-        public JsonResult ListDirectoryContent(string directory)
+        [HttpPost]
+        public JsonResult ListDirectoryContent(string directory, string listtype)
         {
 
             string filePath = directory.Trim('/');
-
+  
             string returnString = filePath;
+
+
+            string ServerLocation = _config.GetValue<string>("CADViewer:ServerLocation");
+            string ServerUrl = _config.GetValue<string>("CADViewer:ServerUrl");
+
+
+            if (listtype != null)
+            {
+                string loadtype = listtype.Trim('/');
+                if (loadtype.IndexOf("serverfolder") == 0)
+                {
+
+                    if (filePath.IndexOf(ServerUrl) == 0)
+                    {
+                        //do nothing!! - handle below
+                    }
+                    else
+                        filePath = ServerLocation + filePath;
+                }
+
+            }
+
+
+
+            if (filePath.IndexOf(ServerUrl) == 0)
+            {
+                filePath = ServerLocation + filePath.Substring(ServerUrl.Length);
+            }
+
+
 
             string[] fileArray = Directory.GetFiles(filePath);
 
@@ -1056,7 +1214,7 @@ namespace cadviewer.Controllers
 
 
 
-        [HttpPost("[action]")]
+        [HttpPost]
         public JsonResult MakeSinglepagePDF(string fileName_0, string rotation_0, string page_format_0)
         {
 
@@ -1180,14 +1338,172 @@ namespace cadviewer.Controllers
         }
 
 
-
-
-
-        [HttpPost("[action]")]
-        public JsonResult MergeEmail(string pdf_file, string pdf_file_name, string from_name, string from_mail, string cc_mail, string replyto, string to_mail, string mail_title, string mail_message)
+    
+        [HttpPost]
+        public JsonResult MergeEmail(string pdf_file, string pdf_file_name, string from_name, string from_mail, string cc_mail, string replyto, string to_mail, string mail_title, string listtype, string mail_message)
         {
 
+            try
+            {
+                string MailServer = _config.GetValue<string>("CADViewer:MailServer");
+                int MailServerPort = _config.GetValue<int>("CADViewer:MailServerPort");
+                string MailUserName = _config.GetValue<string>("CADViewer:MailUserName");
+                string MailPassword = _config.GetValue<string>("CADViewer:MailPassword");
 
+
+                string ServerLocation = _config.GetValue<string>("CADViewer:ServerLocation");
+                string ServerUrl = _config.GetValue<string>("CADViewer:ServerUrl");
+
+
+                string ccmail = cc_mail;
+                string thisreplyto = replyto;
+
+
+                if (listtype != null)
+                {
+                    string loadtype = listtype.Trim('/');
+                    if (loadtype.IndexOf("serverfolder") == 0)
+                    {
+
+                        if (pdf_file.IndexOf(ServerUrl) == 0)
+                        {
+                            //do nothing!! - handle below
+                        }
+                        else
+                            pdf_file = ServerLocation + pdf_file;
+                    }
+
+                }
+
+
+
+                string localPath = new Uri(pdf_file).LocalPath;
+                byte[] bytes = new byte[1];  // dummy declaration
+
+                try
+                {
+                    using (FileStream fsSource = new FileStream(localPath, FileMode.Open, FileAccess.Read))
+                    {
+                        bytes = new byte[fsSource.Length];
+                        // Read the source file into a byte array.
+                        int numBytesToRead = (int)fsSource.Length;
+                        int numBytesRead = 0;
+                        while (numBytesToRead > 0)
+                        {
+                            // Read may return anything from 0 to numBytesToRead.
+                            int n = fsSource.Read(bytes, numBytesRead, numBytesToRead);
+
+                            // Break when the end of the file is reached.
+                            if (n == 0)
+                                break;
+
+                            numBytesRead += n;
+                            numBytesToRead -= n;
+                        }
+                    }
+                }
+                catch (FileNotFoundException ioEx)
+                {
+                    return Json("failed to send email with the following error:" + ioEx);
+
+                }
+
+                // new toolkit   NuGet MailKit
+
+                MimeMessage message = new MimeMessage();
+
+                MailboxAddress from = new MailboxAddress(from_name, from_mail);
+                message.From.Add(from);
+
+                MailboxAddress to = new MailboxAddress(to_mail, to_mail);
+                message.To.Add(to);
+
+                message.Subject = mail_title;
+
+                BodyBuilder bodyBuilder = new BodyBuilder();
+                //bodyBuilder.HtmlBody = "<h1>Hello World!</h1>";
+                bodyBuilder.TextBody = mail_message;
+            
+                var filename = pdf_file.Substring(pdf_file.LastIndexOf("/") + 1);
+
+            
+                bodyBuilder.Attachments.Add(filename, bytes);
+                message.Body = bodyBuilder.ToMessageBody();
+
+                MailKit.Net.Smtp.SmtpClient client = new MailKit.Net.Smtp.SmtpClient();
+                client.Connect(MailServer, MailServerPort, true);
+                client.Authenticate(MailUserName, MailPassword);
+
+                client.Send(message);
+                client.Disconnect(true);
+                client.Dispose();
+
+                return Json("email was sent successfully!");
+
+
+                /*
+
+                                SmtpMail oMail = new SmtpMail("TryIt");
+
+                                // Set sender email address, please change it to yours
+                                oMail.From = from_mail;
+                                // Set recipient email address, please change it to yours
+                                oMail.To = to_mail;
+
+                                // Set email subject
+                                oMail.Subject = mail_title;
+                                // Set Html body
+                                oMail.HtmlBody = mail_message;
+
+                                // return Json("pdf_file:" + pdf_file);
+                                // Add attachment from local disk
+                                oMail.AddAttachment(pdf_file_name, bytes);
+
+                                // Add attachment from local disk
+                                //oMail.AddAttachment(pdf_file);
+
+
+                                // Your SMTP server address
+                                SmtpServer oServer = new SmtpServer(MailServer);
+
+                                // User and password for ESMTP authentication
+                                oServer.User = MailUserName;
+                                oServer.Password = MailPassword;
+
+                                // Most mordern SMTP servers require SSL/TLS connection now.
+                                // ConnectTryTLS means if server supports SSL/TLS, SSL/TLS will be used automatically.
+                                oServer.ConnectType = SmtpConnectType.ConnectTryTLS;
+
+                                // If your SMTP server uses 587 port
+                                // oServer.Port = 587;
+
+                                // If your SMTP server requires SSL/TLS connection on 25/587/465 port
+                                oServer.Port = MailServerPort;                          // 25 or 587 or 465
+                                oServer.ConnectType = SmtpConnectType.ConnectSSLAuto;
+
+                                //Console.WriteLine("start to send email with attachment ...");
+
+                                SmtpClient oSmtp = new SmtpClient();
+                                oSmtp.SendMail(oServer, oMail);
+
+                                return Json("email was sent successfully!");
+                 */
+
+            }
+            catch (Exception ep)
+            {
+                return Json("failed to send email with the following error:" + ep.Message);
+            }
+
+        }
+
+
+
+
+/*
+        [HttpPost]
+        public JsonResult MergeEmail(string pdf_file, string pdf_file_name, string from_name, string from_mail, string cc_mail, string replyto, string to_mail, string mail_title, string listtype, string mail_message)
+        {
 
             try
             {
@@ -1208,6 +1524,32 @@ namespace cadviewer.Controllers
                 oMail.Subject = mail_title;
                 // Set Html body
                 oMail.HtmlBody = mail_message;
+
+
+                string ServerLocation = _config.GetValue<string>("CADViewer:ServerLocation");
+                string ServerUrl = _config.GetValue<string>("CADViewer:ServerUrl");
+
+       
+                if (listtype != null)
+                {
+                    string loadtype = listtype.Trim('/');
+                    if (loadtype.IndexOf("serverfolder") == 0)
+                    {
+
+                        if (pdf_file.IndexOf(ServerUrl) == 0)
+                        {
+                            //do nothing!! - handle below
+                        }
+                        else
+                            pdf_file = ServerLocation + pdf_file;
+                    }
+
+                }
+
+
+         
+                // return Json("pdf_file:" + pdf_file);
+
 
 
                 string localPath = new Uri(pdf_file).LocalPath;
@@ -1280,93 +1622,17 @@ namespace cadviewer.Controllers
 
 
 
-            /*
-
-                        string mail = to_mail;
-            string title = mail_title;
-            string message = mail_message;
-            string file = pdf_file;
-            byte[] bytes;
-
-            string localPath = "";
-            localPath = new Uri(pdf_file).LocalPath;
-
-            using (FileStream fsSource = new FileStream(localPath, FileMode.Open, FileAccess.Read))
-            {
-                // Read the source file into a byte array.
-                bytes = new byte[fsSource.Length];
-                int numBytesToRead = (int)fsSource.Length;
-                int numBytesRead = 0;
-                while (numBytesToRead > 0)
-                {
-                    // Read may return anything from 0 to numBytesToRead.
-                    int n = fsSource.Read(bytes, numBytesRead, numBytesToRead);
-                    // Break when the end of the file is reached.
-                    if (n == 0)
-                        break;
-                    numBytesRead += n;
-                    numBytesToRead -= n;
-                }
-                numBytesToRead = bytes.Length;
-
-            }
-
-            UTF8Encoding temp = new UTF8Encoding(true);
-           
-            //string content = temp.GetString(bytes));
-
-            string contentpre = Convert.ToBase64String(bytes);
-            string content = "";
-
-            int chunkSize = 76;
-            int stringLength = content.Length;
-            for (int i = 0; i < stringLength; i += chunkSize)
-            {
-                if (i + chunkSize > stringLength) chunkSize = stringLength - i;
-                    content+=contentpre.Substring(i, chunkSize)+ "\r\n";
-
-            }
-            //content = chunk_split(base64_encode( content));
-
-            string uid = CreateMD5(GetUniqID()); //md5(uniqid(time()));
-            string name = Path.GetFileName(file);
-
-            string filename = name;
-// header
-            string header = "From: "+from_name+" <"+from_mail+">\r\n";
-            header+= "Cc: "+cc_mail+" \r\n";
-            header+= "Reply-To: "+replyto+"\r\n";
-            header+= "MIME-Version: 1.0\r\n";
-            header+= "Content-Type: multipart/mixed; boundary=\""+uid+"\"\r\n\r\n";
-
-// message & attachment
-            string nmessage = "--"+uid+"\r\n";
-            nmessage+= "Content-type:text/plain; charset=iso-8859-1\r\n";
-            nmessage+= "Content-Transfer-Encoding: 7bit\r\n\r\n";
-            nmessage+= message+"\r\n\r\n";
-            nmessage+= "--"+uid+"\r\n";
-            nmessage+= "Content-Type: application/octet-stream; name=\""+pdf_file_name+"\"\r\n";
-            nmessage+= "Content-Transfer-Encoding: base64\r\n";
-            nmessage+= "Content-Disposition: attachment; filename=\""+pdf_file_name+"\"\r\n\r\n";
-            nmessage+= content+"\r\n\r\n";
-            nmessage+= "--"+uid+"--";
-
-            if (mail(email, title, nmessage, header))
-            {
-                return Json("4: true: mail");
-            }
-            else
-            {
-                return Json( "3: false: mail"´);
-            }
-
-
-
-    */
         }
 
+***/
 
-        public string GetUniqID()
+
+
+
+
+
+
+            public string GetUniqID()
         {
             var ts = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0));
             double t = ts.TotalMilliseconds / 1000;

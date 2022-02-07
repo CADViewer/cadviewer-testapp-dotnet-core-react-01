@@ -1,20 +1,21 @@
 {
   "name": "cadviewer",
-  "version": "0.1.0",
+  "version": "6.8.60",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^13.1.9",
     "bootstrap": "^3.3.7",
-    "cadviewer": "^6.5.10",
+    "cadviewer": "^6.8.60",
     "react": "^16.0.0",
     "react-bootstrap": "^0.31.5",
     "react-dom": "^16.0.0",
     "react-router-bootstrap": "^0.24.4",
     "react-router-dom": "^4.2.2",
     "react-scripts": "^4.0.2",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "typescript": "^4.5.5"
   },
   "scripts": {
     "start": "rimraf ./build && react-scripts start",
