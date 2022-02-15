@@ -5,13 +5,16 @@ The repository contains a full setup of CADViewer with CAD Converters and script
 
 ## This package contains
 
-1: CADViewer script library  - in its preferred folder structure
+1: CADViewer script library  - npm installed into ClientApp as part of React JS front-end.
 
 2: AutoXchange AX2022 Converter and DWG Merge 2022 Converter - in their preferred folder structure
 
 3: All structures for file-conversion, sample drawings, redlines, etc. 
 
-4: A number of HTML files with CADViewer samples.
+4: ClientApp/src/index.js invokes helper script documents with CADViewer.js (CADViewer canvas initialization), script document with helper methods for testing the API (CADViewerHelperMethods.js and CADViewerHelperMethodsGroupSpaceMethods.js) and drag-place div to add objects to the canvas CADViewerSpaceObjects.js.
+
+     4a:  Edit ClientApp/src/index.js to run: CADViewerHelperMethods.js
+     4b:  Edit ClientApp/src/index.js to run: CADViewerHelperMethodsGroupSpaceMethods.js
 
 5: The folder structure for dotNet core script handlers for communication between CADViewer and the back-end AutoXchange 2022.
 
