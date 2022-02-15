@@ -102,10 +102,10 @@ function insert_from_type_id_image(){
 
 function create_group_space_object_01() {
 
-    var loadSpaceImage_ID = "IdentivId_" + iconObjectCounter;
-    var loadSpaceImage_Name = "IdentivName_" + iconObjectCounter;
+    var loadSpaceImage_ID = "SecureId_" + iconObjectCounter;
+    var loadSpaceImage_Name = "SecureName_" + iconObjectCounter;
 
-    var loadSpaceImage_Type = "IdentivObject";
+    var loadSpaceImage_Type = "SecureObject";
     var loadSpaceImage_Layer = "cvjs_SpaceLayer";
 
     var LocationOr64byteEncodedArr = [];
@@ -262,7 +262,7 @@ function create_group_space_object_01() {
     // this is just a template holder
 
     var customObject = {
-        "insertType": "IdentivObject",
+        "insertType": "MyOwnObject",
         "generalInfo": { "id": jsonSpaceObject.id, "name": loadSpaceImage_Name, "type": loadSpaceImage_Type, "begindate": strDate, "enddate": strDate2 },
         "dimension": { "unit": "svg", "width": width, "length": height, "rotationInsert": 0 },
         "insertRules": { "initialPositionVerified": false, "positionChanged": false, "infoAdded": false, "inserted": false },

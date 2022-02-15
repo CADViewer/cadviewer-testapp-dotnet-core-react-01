@@ -5,8 +5,8 @@ Copyright (c) 2017, 2018, 2019, 2020, 2021, 2022 Tailor Made Software, Ltd.
      Portions Copyright (c) 1997-2016, Tailor Made Software, Ltd.
 ===========================================================================
 Input file: c:\cadviewer-testapp-dotnet-core-react-01\cadviewer\cadviewer\wwwroot\\content\drawings\dwg\hq17_.dwg
-Output File Name: c:\cadviewer-testapp-dotnet-core-react-01\cadviewer\cadviewer\wwwroot\converters\files\F204166.svg
+Output File Name: c:\cadviewer-testapp-dotnet-core-react-01\cadviewer\cadviewer\wwwroot\converters\files\F310621.svg
 ViewName: ModelSpace
-OpenFile: c:\cadviewer-testapp-dotnet-core-react-01\cadviewer\cadviewer\wwwroot\converters\files\F204166.svg
+OpenFile: c:\cadviewer-testapp-dotnet-core-react-01\cadviewer\cadviewer\wwwroot\converters\files\F310621.svg
 
-Elapsed Time: 0.584 seconds
+Elapsed Time: 0.264 seconds
