@@ -12,6 +12,8 @@ import './CADViewer_component.css';
 import * as cadviewer from "cadviewer";
 
 export var textLayer1; 
+export var ServerBackEndUrl; 
+export var ServerUrl; 
 
 export function clearTextLayer(){
 	textLayer1 = cadviewer.cvjs_clearLayer(textLayer1);
@@ -47,14 +49,6 @@ function cvjs_OnLoadEnd(){
 
 	textLayer1 = cadviewer.cvjs_clearLayer(textLayer1);
 	
-	cadviewer.cvjs_LayerOff("EC1 Space Names");
-	cadviewer.cvjs_LayerOff("EC1 Space Status Descs");
-	cadviewer.cvjs_LayerOff("EC1 Space Project");
-	cadviewer.cvjs_LayerOff("EC1 Space Function Descs");
-	cadviewer.cvjs_LayerOff("EC1 Space Type Descs");
-	cadviewer.cvjs_LayerOff("EC1 Tenant Names");
-	cadviewer.cvjs_LayerOff("EC1 UDA Design Capacity");
-	cadviewer.cvjs_LayerOff("EC1 UDA Is Secured");
 
 }
 
@@ -321,6 +315,13 @@ function cvjs_ObjectSelectedHyperlink(){
 function cvjs_ObjectSelectedStickyNotes(){
 };
 
+// 6.8.62
+function cvjs_insertSpaceObjectCustomCodePlaceholder(spaceID, jsonObject){
+    // rules for placement on canvas
+    if (true) return true;
+}
+
+
 
 class CADViewer extends Component {
 
@@ -331,9 +332,9 @@ class CADViewer extends Component {
 		window.addEventListener('resize', this._handleWindowResize);
 	
         // DotNetCore Backend
-        var ServerBackEndUrl = "https://localhost:44325/";
+        ServerBackEndUrl = "https://localhost:44325/";
         // React front-end
-        var ServerUrl = "https://localhost:44325/";
+        ServerUrl = "https://localhost:44325/";
 
         var ServerLocation = "";
 //        var ServerLocation = "c:/cadviewer-testapp-dotnet-core-react-01/cadviewer/cadviewer/wwwroot/";   - do not expose, "" will use server side paths
@@ -405,6 +406,10 @@ class CADViewer extends Component {
         cadviewer.cvjs_setCallbackMethod("cvjs_mouseleave", cvjs_mouseleave);
         cadviewer.cvjs_setCallbackMethod("cvjs_mouseenter", cvjs_mouseenter);
         cadviewer.cvjs_setCallbackMethod("cvjs_graphicalObjectCreated", cvjs_graphicalObjectCreated);
+        // 6.8.62
+        cadviewer.cvjs_setCallbackMethod("cvjs_insertSpaceObjectCustomCodePlaceholder", cvjs_insertSpaceObjectCustomCodePlaceholder);
+
+
 
 		// END set all callback methods
 
