@@ -28,7 +28,7 @@ Read the sections on installing and handling [Fonts](https://tailormade.com/ax20
 
 ## How to Use
 
-Once installed, open cadviewer.sln the samplecan be run from a web-browser. Use http://localhost:xxxxx/ as a starting point (assuming that your have installed under http://localhost:xxxxx).
+Once installed, open cadviewer.sln the sample can be run from a web-browser. Use http://localhost:xxxxx/ as a starting point (assuming that your have installed under http://localhost:xxxxx).
 
 
 
