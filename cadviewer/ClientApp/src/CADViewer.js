@@ -354,7 +354,13 @@ class CADViewer extends Component {
 
 
       // USER Controlled - 
-        cadviewer.cvjs_setHandlers_FrontEnd('dotNetCore', 'ReactJS', 'floorPlan', "CADViewer/");   // user controlled back-end
+      //  cadviewer.cvjs_setHandlers_FrontEnd('dotNetCore', 'ReactJS', 'floorPlan', "CADViewer/");   // user controlled back-end
+
+
+     cadviewer.cvjs_setAllServerPaths_and_Handlers(ServerBackEndUrl, ServerUrl, ServerLocation, "dotNetCore", "ReactJS", "floorPlan", "CADViewer");
+
+
+
 
 
 //      cadviewer.cvjs_setHandlers_FrontEnd('NodeJS', 'ReactJS','floorPlan');   // user controlled back-end

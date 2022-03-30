@@ -895,7 +895,11 @@ namespace cadviewer.Controllers
 
             try
             {
-                Trace.WriteLine("HELLO  SaveFile:" + file + "XXXX");
+                Trace.WriteLine("SaveFile:" + file + "XXXX");
+
+
+                //string fileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + "save.";
+
 
 
                 string filePath = DecodeUrlString(file);
